@@ -19,6 +19,10 @@ class PCA(object):
 
     def __init__(self, points, weights=None):
 
+        # The floating point error of 32 bit floats accumulates quite severely
+        # in this algorithm.
+        points = np.asarray(points, dtype=np.float64)
+
         # PCA is a pretty straight forward recipe.
 
         # Find the center of mass and eliminate it.
