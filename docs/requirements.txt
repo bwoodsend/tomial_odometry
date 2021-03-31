@@ -1,4 +1,8 @@
-Sphinx==3.2.1
+
+# To get the cross references correct requires #9026 from
+# tk0miya/5603_autodoc_canonical which is currently unreleased.
+-e git+git@github.com:sphinx-doc/sphinx.git@e888a4424939fd34590e5443838709d00d8d8874#egg=Sphinx
+
 sphinx-copybutton==0.3.0
 sphinxcontrib-websupport==1.1.0
 sphinx-rtd-theme==0.5.0

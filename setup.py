@@ -33,7 +33,7 @@ setup(
     extras_require={
         "test": [
             'pytest>=3', 'pytest-order', 'coverage', 'pytest-cov',
-            'coverage-conditional-plugin'
+            'coverage-conditional-plugin', 'tomial_tooth_collection_api'
         ]
     },
     license="MIT license",

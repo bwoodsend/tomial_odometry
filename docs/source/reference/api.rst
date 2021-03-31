@@ -3,3 +3,5 @@ API reference
 =============
 
 .. toctree::
+
+    odometry
