@@ -13,7 +13,7 @@ from tomial_odometry import Odometry
 # - X axis: left
 # - Y axis: vertically up
 # - Z axis: forwards
-mesh = Mesh(model('3D scan model_Mandibular_export.stl.xz'))
+mesh = Mesh(model('3D scan model_Mandibular_export'))
 
 
 def test_walk_through():
