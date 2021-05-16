@@ -81,6 +81,18 @@ class Odometry(BaseOdometry):
         """Vertical up or to the roof. Use ``-up`` to get a *down* vector."""
         return self._eZ
 
+    @right.setter
+    def right(self, x):
+        self._eX = x
+
+    @forwards.setter
+    def forwards(self, x):
+        self._eY = x
+
+    @up.setter
+    def up(self, x):
+        self._eZ = x
+
     @property
     def oclusal(self) -> geometry.UnitVector:
         """:attr:`up` for a mandibular model, down for a maxillary model."""
@@ -309,14 +321,5 @@ class Odometry(BaseOdometry):
             out += self.oclusal * np.array(oclusal)[..., np.newaxis]
         return out
 
-    @property
-    def names(self) -> Tuple[str, str, str]:
-        """The names of the axes given by :attr:`axes`. For this class they
-        are:
-
-        * ``"right"``
-        * ``"forwards"``
-        * ``"up"``
-
-        """
-        return "_eX", "_eY", "_eZ"
+    names: Tuple[str, str, str] = ("right", "forwards", "up")
+    """The names of the axes given by :attr:`axes`."""
