@@ -28,7 +28,7 @@ setup(
     "Find and normalise the position and orientation of a digital dental model.",
     install_requires=[
         'numpy',
-        'motmot @ git+ssh://git@github.com/bwoodsend/motmot.git@974801d2f48c20ad875f3220d7a5272b8886a536',
+        'motmot @ git+ssh://git@github.com/bwoodsend/motmot.git@397924601f4c0c49f28899df219fc6c8c51236db',
     ],
     extras_require={
         "test": [
