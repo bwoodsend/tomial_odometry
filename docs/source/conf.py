@@ -95,7 +95,7 @@ with open("rst_prolog.txt") as f:
 intersphinx_mapping = {
     'python': ('http://docs.python.org/3', None),
     'numpy': ('https://numpy.org/doc/stable/', None),
-    'motmot': ("/e/notebooks/motmot/docs/build/html", None),
+    'motmot': ("https://bwoodsend.github.io/motmot/", None),
 }
 
 # Autodoc defaults.
