@@ -53,9 +53,22 @@ jobs:
           restore-keys: restore-key
 
       - name: Install
+        shell: bash
         run: |
+          mkdir -p ~/.ssh
+          echo ${{ secrets.SSH }} | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval $(ssh-agent)
+          ssh-add ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no git@github.com ls || echo ''
+          ssh git@github.com || echo ''
           pip install --cache-dir=pip-cache wheel
           pip install --cache-dir=pip-cache -e .[test]
+
+      - name: Authenticate tomial_tooth_collection_api
+        run: python -m tomial_tooth_collection_api --authenticate
+        env:
+          TOMIAL_TOOTH_COLLECTION_TOKEN: ${{ secrets.TOMIAL_TOOTH_COLLECTION_TOKEN }}
 
       - name: Test
         run: pytest

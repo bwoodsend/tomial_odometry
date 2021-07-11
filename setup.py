@@ -34,7 +34,7 @@ setup(
         "test": [
             'pytest>=3', 'pytest-order', 'coverage', 'pytest-cov',
             'coverage-conditional-plugin',
-            'tomial_tooth_collection_api @ git+ssh://git@github.com/bwoodsend/tomial_tooth_collection_api.git@ccb48b3f2bfa05ac6f4fd0fdd3fd98bfff095b75'
+            'tomial_tooth_collection_api @ git+ssh://git@github.com/bwoodsend/tomial_tooth_collection_api.git@77a40b9d137f54b22e02570215205ffd5239f082'
         ]
     },
     license="MIT license",
