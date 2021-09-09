@@ -35,25 +35,25 @@ def test_walk_through():
     # Vertical axis.
     self._check_eZ_sign()
     assert self._eZ[1] > .9
-    assert self.oclusal[1] > .9
+    assert self.occlusal[1] > .9
 
     self.arch_type = "U"
     assert self._eZ[1] > .9
-    assert self.oclusal[1] < -.9
+    assert self.occlusal[1] < -.9
 
     self._check_eZ_sign()
-    assert self.oclusal[1] > .9
+    assert self.occlusal[1] > .9
     assert self._eZ[1] < -.9
 
-    self.oclusal *= -1
+    self.occlusal *= -1
     self._check_eZ_sign()
-    assert self.oclusal[1] > .9
+    assert self.occlusal[1] > .9
     assert self._eZ[1] < -.9
 
     self.arch_type = "L"
     self._check_eZ_sign()
     assert self._eZ[1] > .9
-    assert self.oclusal[1] > .9
+    assert self.occlusal[1] > .9
 
     # Forwards/backwards axis.
     self._check_eY_sign()
@@ -117,7 +117,7 @@ def test_dummy_and_horizontal_conversions():
     points_2d = [100, 608]
     points_3d = self.from_horizontal(points_2d)
     assert self.up.tolist() == m[-1]
-    assert (-self.oclusal).tolist() == m[-1]
+    assert (-self.occlusal).tolist() == m[-1]
     assert self.up(points_3d) == 0
     assert [self.right(points_3d), self.forwards(points_3d)] == points_2d
 
@@ -126,8 +126,8 @@ def test_dummy_and_horizontal_conversions():
     assert self.forwards(points_3d) == pytest.approx(points_2d[1])
     assert self.up(points_3d) == pytest.approx(10)
 
-    points_3d = self.from_horizontal(points_2d, oclusal=99)
-    assert self.oclusal(points_3d) == pytest.approx(99)
+    points_3d = self.from_horizontal(points_2d, occlusal=99)
+    assert self.occlusal(points_3d) == pytest.approx(99)
 
 
 def test_hints():

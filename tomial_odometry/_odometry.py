@@ -28,7 +28,7 @@ class Odometry(BaseOdometry):
     | :attr:`up`        | To the roof irregardless of                          |
     |                   | whether the model is maxillary of mandibular.        |
     +-------------------+------------------------------------------------------+
-    | :attr:`oclusal`   | Alias for the direction of the teeth. Up if it is    |
+    | :attr:`occlusal`  | Alias for the direction of the teeth. Up if it is    |
     |                   | a lower jaw or down if it is an upper jaw.           |
     +-------------------+------------------------------------------------------+
 
@@ -37,7 +37,7 @@ class Odometry(BaseOdometry):
 
     Use of this class makes for more flexible code than direct inspection of
     the raw x, y or z components. The following example takes a sub-sample of
-    only the top (oclusally) 5mm so as to only include the tips of teeth. It
+    only the top (occlusally) 5mm so as to only include the tips of teeth. It
     is fully independent of initial orientation, the scanner used and whether
     the jaw is upper or lower.
 
@@ -49,7 +49,7 @@ class Odometry(BaseOdometry):
         mesh = Mesh("my teeth.stl")
         odom = Odometry(mesh)
 
-        heights = odom.oclusal(mesh.centers)
+        heights = odom.occlusal(mesh.centers)
         include_mask = heights > heights.max() - 5.0
 
         cropped = mesh.crop(include_mask)
@@ -94,12 +94,12 @@ class Odometry(BaseOdometry):
         self._eZ = x
 
     @property
-    def oclusal(self) -> geometry.UnitVector:
+    def occlusal(self) -> geometry.UnitVector:
         """:attr:`up` for a mandibular model, down for a maxillary model."""
         return self.up if self.arch_type == "L" else -self.up
 
-    @oclusal.setter
-    def oclusal(self, x):
+    @occlusal.setter
+    def occlusal(self, x):
         self._eZ = geometry.UnitVector(x) * (1 if self.arch_type == "L" else -1)
 
     def __init__(self, mesh: Mesh, arch_type=None, hints=None):
@@ -179,15 +179,15 @@ class Odometry(BaseOdometry):
     def _check_eZ_sign(self):
         """Check/correct the sign of the vertical axis.
 
-        The triangle density is much higher on the oclusal surface so a mean of
-        ``mesh.units`` gives a decent approximation of oclusal.
+        The triangle density is much higher on the occlusal surface so a mean of
+        ``mesh.units`` gives a decent approximation of occlusal.
         """
-        # Get an approximate oclusal from the mesh's unit normals.
-        self._mesh_oclusal = geometry.UnitVector(
+        # Get an approximate occlusal from the mesh's unit normals.
+        self._mesh_occlusal = geometry.UnitVector(
             [i.sum() for i in self._mesh.units.T])
 
-        # Compare with the PCA's oclusal.
-        agreement = self._mesh_oclusal(self.oclusal)
+        # Compare with the PCA's occlusal.
+        agreement = self._mesh_occlusal(self.occlusal)
 
         assert abs(agreement) > 0.75, agreement  # typically > .95
         self._eZ[:] *= np.sign(agreement)  # and swap sign if necessary
@@ -210,19 +210,19 @@ class Odometry(BaseOdometry):
         # I tried a few different weightings to improve the fit.
         # They all get roughly the same results.
 
-        # Prioritise the oclusal facing triangles
-        # weights = geometry.inner_product(self._normals, self._mesh_oclusal)
+        # Prioritise the occlusal facing triangles
+        # weights = geometry.inner_product(self._normals, self._mesh_occlusal)
 
-        # Prioritise the more oclusal points
-        weights = self._mesh_oclusal(self._mesh.centers)
+        # Prioritise the more occlusal points
+        weights = self._mesh_occlusal(self._mesh.centers)
 
         # Don't allow negative weights - turns out they don't do any harm.
         # weights.clip(min=0, out=weights)
 
-        # Prioritise non oclusal facing triangles.
+        # Prioritise non occlusal facing triangles.
         # This is supposed to capture the labial and lingual vertical surfaces.
         weights *= geometry.magnitude_sqr(
-            np.cross(self._mesh.units, self._mesh_oclusal))
+            np.cross(self._mesh.units, self._mesh_occlusal))
 
         weights -= np.min(weights)
         weights /= np.mean(weights)
@@ -248,11 +248,11 @@ class Odometry(BaseOdometry):
 
         PCA's vertical is only approximate. This step improves its accuracy
         by fitting a line across the top of the model then adjusting
-        :attr:`forwards` and :attr:`oclusal` so that this line is horizontal.
+        :attr:`forwards` and :attr:`occlusal` so that this line is horizontal.
         """
         points = self._mesh.centers
         ys = self.forwards(points)
-        heights = self.oclusal(points)
+        heights = self.occlusal(points)
 
         min_height = heights.min()
 
@@ -271,7 +271,7 @@ class Odometry(BaseOdometry):
 
         new_forwards_3d = geometry.UnitVector(
             yz_forward_tangent[0] * self.forwards \
-            + yz_forward_tangent[1] * self.oclusal)
+            + yz_forward_tangent[1] * self.occlusal)
 
         eZ = np.cross(self.right, new_forwards_3d)
         self._eZ = geometry.UnitVector(self._eZ.matched_sign(eZ))
@@ -291,7 +291,7 @@ class Odometry(BaseOdometry):
         """
         return geometry.get_components_zipped(points, self.right, self.forwards)
 
-    def from_horizontal(self, points_2d, up=None, oclusal=None):
+    def from_horizontal(self, points_2d, up=None, occlusal=None):
         """Reconstruct points from their horizontal projections as returned
         by :meth:`to_horizontal`.
 
@@ -302,8 +302,8 @@ class Odometry(BaseOdometry):
             up:
                 The projection(s) in the :attr:`up` direction, defaults to
                 ``0.0``.
-            oclusal:
-                The projection(s) in the :attr:`oclusal` direction,
+            occlusal:
+                The projection(s) in the :attr:`occlusal` direction,
                 defaults to ``0.0``.
         Returns:
             Remapped points. An array with :py:`shape[-1] == 3`.
@@ -311,14 +311,14 @@ class Odometry(BaseOdometry):
         More fine-grained control over what happens to the vertical axis can
         be achieved by feeding the output of this method to the
         :meth:`~motmot.geometry.UnitVector.with_` method of :attr:`up` or
-        :attr:`oclusal`.
+        :attr:`occlusal`.
 
         """
         out = points_2d @ np.array([self.right, self.forwards])
         if up is not None:
             out += self.up * np.array(up)[..., np.newaxis]
-        if oclusal is not None:
-            out += self.oclusal * np.array(oclusal)[..., np.newaxis]
+        if occlusal is not None:
+            out += self.occlusal * np.array(occlusal)[..., np.newaxis]
         return out
 
     names: Tuple[str, str, str] = ("right", "forwards", "up")
