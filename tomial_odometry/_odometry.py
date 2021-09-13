@@ -103,7 +103,9 @@ class Odometry(BaseOdometry):
         self._eZ = geometry.UnitVector(x) * (1 if self.arch_type == "L" else -1)
 
     def __init__(self, mesh: Mesh, arch_type=None, hints=None):
-        """
+        """The default initialiser takes a mesh and determines its orientation
+        automatically. To boycott this use the `dummy` constructor.
+
         Args:
             mesh:
                 An opened STL file of a dental model.
