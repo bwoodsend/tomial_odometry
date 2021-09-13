@@ -105,6 +105,9 @@ autodoc_default_options = {
     'undoc-members': True,
 }
 
+# Make `foo` equivalent to :any:`foo`.
+default_role = "any"
+
 # -- Options for HTML output -------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
