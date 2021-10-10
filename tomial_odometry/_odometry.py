@@ -83,15 +83,15 @@ class Odometry(BaseOdometry):
 
     @right.setter
     def right(self, x):
-        self._eX = geometry.UnitVector(x)
+        self._eX = x
 
     @forwards.setter
     def forwards(self, x):
-        self._eY = geometry.UnitVector(x)
+        self._eY = x
 
     @up.setter
     def up(self, x):
-        self._eZ = geometry.UnitVector(x)
+        self._eZ = x
 
     @property
     def occlusal(self) -> geometry.UnitVector:

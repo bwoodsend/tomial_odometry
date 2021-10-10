@@ -84,6 +84,23 @@ def test_walk_through():
     assert np.array_equal(self.axes, [self.right, self.forwards, self.up])
 
 
+def test_univ_vector_types():
+    self = Odometry(mesh, "L")
+    assert isinstance(self.up, geometry.UnitVector)
+    assert isinstance(self.forwards, geometry.UnitVector)
+    assert isinstance(self.occlusal, geometry.UnitVector)
+
+    self.up = [1, 0, 0]
+    assert isinstance(self.up, geometry.UnitVector)
+    assert isinstance(self.occlusal, geometry.UnitVector)
+    self.forwards = [0, 2, 1]
+    assert isinstance(self.forwards, geometry.UnitVector)
+
+    self = Odometry.dummy("L")
+    assert isinstance(self.forwards, geometry.UnitVector)
+    assert isinstance(self.occlusal, geometry.UnitVector)
+
+
 def test_normalised():
     """After removing the center of mass and applying the rotation matrix given
     by an Odometry, applying the odometry algorithm again should give a

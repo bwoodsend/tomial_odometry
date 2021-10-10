@@ -78,3 +78,7 @@ class BaseOdometry(abc.ABC):
         """
         return np.array([getattr(self, val) for val in self.names])
 
+    def __setattr__(self, key, value):
+        if key in self.names:
+            value = geometry.UnitVector(value)
+        super().__setattr__(key, value)
