@@ -17,6 +17,29 @@ class BaseOdometry(abc.ABC):
 
     """
 
+    def __init__(self, arch_type, axes=None, com=None):
+        """Create an odometry explicitly from a center of mass and basis
+         vectors.
+
+         Args:
+             arch_type:
+                 ``'U'`` for upper jaw, ``'L'`` for lower jaw.
+             axes:
+                 Basis vectors representing each of the directions in
+                 :attr:`axes`. Defaults to :py:`numpy.eye(3)`.
+             com:
+                 center of mass, defaults to the origin :py:`[0, 0, 0]`.
+
+        """
+        self.center_of_mass = np.zeros(3) if com is None else com
+        axes = np.eye(3) if axes is None else axes
+
+        for (name, axis) in zip(self.names, axes):
+            setattr(self, name, geometry.UnitVector(axis))
+
+        assert arch_type in "UL"
+        self.arch_type = arch_type
+
     @abc.abstractmethod
     def names(self):
         """The names of the axes given by :attr:`axes`."""
@@ -55,32 +78,3 @@ class BaseOdometry(abc.ABC):
         """
         return np.array([getattr(self, val) for val in self.names])
 
-    @classmethod
-    def dummy(cls, arch_type, axes=None, com=None):
-        """Create an odometry explicitly from a center of mass and basis
-        vectors, circumventing the odometry finding algorithm.
-
-        Args:
-            arch_type:
-                ``'U'`` for upper jaw, ``'L'`` for lower jaw.
-            axes:
-                Basis vectors representing each of the directions in
-                :attr:`axes`. Defaults to :py:`numpy.eye(3)`.
-            com:
-                center of mass, defaults to the origin :py:`[0, 0, 0]`.
-        Returns:
-            A new odometry.
-
-        """
-        self = cls.__new__(cls)
-
-        self.center_of_mass = np.zeros(3) if com is None else com
-        axes = np.eye(3) if axes is None else axes
-
-        for (name, axis) in zip(self.names, axes):
-            setattr(self, name, geometry.UnitVector(axis))
-
-        assert arch_type in "UL"
-        self.arch_type = arch_type
-
-        return self

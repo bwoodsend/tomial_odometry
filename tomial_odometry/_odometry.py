@@ -325,3 +325,24 @@ class Odometry(BaseOdometry):
 
     names: Tuple[str, str, str] = ("right", "forwards", "up")
     """The names of the axes given by :attr:`axes`."""
+
+    @classmethod
+    def dummy(cls, arch_type, axes=None, com=None):
+        """Create an odometry explicitly from a center of mass and basis
+        vectors, circumventing the odometry finding algorithm.
+
+        Args:
+            arch_type:
+                ``'U'`` for upper jaw, ``'L'`` for lower jaw.
+            axes:
+                Basis vectors representing each of the directions in
+                :attr:`axes`. Defaults to :py:`numpy.eye(3)`.
+            com:
+                center of mass, defaults to the origin :py:`[0, 0, 0]`.
+        Returns:
+            A new odometry.
+
+        """
+        self = cls.__new__(cls)
+        super(Odometry, self).__init__(arch_type, axes, com)
+        return self
