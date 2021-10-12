@@ -19,6 +19,7 @@
 #
 import os
 import sys
+from pathlib import Path
 
 sys.path.insert(0, os.path.abspath('../..'))
 
@@ -108,6 +109,30 @@ autodoc_default_options = {
 # Make `foo` equivalent to :any:`foo`.
 default_role = "any"
 
+# Build the changelog from per-release fragments.
+histories = sorted(
+    Path("../../history").resolve().glob("*.rst"),
+    key=lambda x: tuple(map(int, x.stem.split("."))), reverse=True)
+
+history = """\
+=========
+Changelog
+=========
+
+.. role:: red
+    :class: in-red
+
+Release history for `tomial_odometry`.
+Breaking changes are :red:`highlighted in red`.
+
+""" + "\n".join(f"v{i.stem}\n-{'-' * len(i.stem)}\n\n"
+                f".. rst-class:: spacious\n\n"
+                f"{indent(i.read_text(), '    ')}" for i in histories)
+
+history_path = Path("history.rst")
+if (not history_path.exists()) or history_path.read_text() != history:
+    history_path.write_text(history)
+
 # -- Options for HTML output -------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -120,7 +145,12 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path = ['static']
+
+
+def setup(app):
+    app.add_css_file('theme-overrides.css')
+
 
 #html_favicon = 'favicon.png'
 

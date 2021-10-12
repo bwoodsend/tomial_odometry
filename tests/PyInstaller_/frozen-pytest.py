@@ -2,7 +2,6 @@
 """
 Freeze pytest.main() with tomial_odometry included.
 """
-
 import sys
 import tomial_odometry
 

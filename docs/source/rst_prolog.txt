@@ -6,3 +6,4 @@
     :language: python
     :class: highlight
 
+.. py:currentmodule:: tomial_odometry

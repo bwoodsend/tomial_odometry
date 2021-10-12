@@ -1,14 +1,21 @@
+.. module:: tomial_odometry
+
 .. include:: ../../README.rst
+    :end-before: Quickstart
+
 
 .. toctree::
-    :maxdepth: 2
-    :caption: Contents:
-
-    reference/api
+    :caption: Usage
 
 
-Indices and tables
-==================
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+    :caption: API Reference
+
+    reference/odometry
+
+
+.. toctree::
+    :caption: About
+
+    history
+

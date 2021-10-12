@@ -4,13 +4,14 @@ block_cipher = None
 
 from PyInstaller.utils.hooks import collect_entry_point
 
+# Collect all available pytest plugins.
 datas, hidden = collect_entry_point("pytest11")
 
 a = Analysis(['frozen-pytest.py'],
              pathex=[SPECPATH],
              binaries=[],
              datas=datas,
-             hiddenimports=hidden + ['tomial_tooth_collection_api'],
+             hiddenimports=hidden,
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

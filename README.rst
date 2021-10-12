@@ -2,34 +2,31 @@
 Tomial Odometry
 ===============
 
-..
-    This site auto-generates the little python version badges from url.
-    The required  format is:
-    https://img.shields.io/badge/[text_block_1]-[text_block_2]-[html_named_color].svg
-
-    It helps to pad with spaces. Characters need to be url escaped (can be done
-    using urllib).
-
-    from urllib.parse import quote
-    "https://img.shields.io/badge/" + quote("python- {}-blue.svg".format(\
-                " | ".join(["3.6", "3.7", "3.8", "3.9", "PyInstaller"])))
-
 .. image::
-    https://img.shields.io/badge/
-    Python-%203.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%20PyInstaller-blue.svg
+    https://img.shields.io/pypi/pyversions/tomial_odometry?label=Python
+    :alt: PyPI version
+    :target: https://pypi.org/project/tomial_odometry/
 
 Find and normalise the position and orientation of a digital dental model.
 
-
-* Free software: MIT license
-* Documentation: https://tomial-odometry.readthedocs.io.
-
+∘
+`MIT license <https://github.com/bwoodsend/tomial_odometry/blob/master/LICENSE>`_
+∘
+PyPI_
+∘
+`Documentation <https://tomial-odometry.readthedocs.io/>`_
+∘
+`Source code <https://github.com/bwoodsend/tomial_odometry>`_
+∘
+`Bug reports <https://github.com/bwoodsend/tomial_odometry/issues>`_
+∘
+`Support <https://github.com/bwoodsend/tomial_odometry/discussions>`_
 
 
 Installation
 ------------
 
-Releases are hosted on PyPI_. To install Tomial Odometry, run
+Releases are hosted on PyPI_. To install ``tomial_odometry``, run
 the following in your terminal:
 
 .. code-block:: console
