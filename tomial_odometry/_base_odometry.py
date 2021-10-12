@@ -8,6 +8,20 @@ from motmot import geometry
 
 
 class BaseOdometry(abc.ABC):
+    """A generic template class for holding the position and orientation of a 3D
+    object.
+
+    Position is characterized by an approximate midpoint (e.g. using
+    `motmot.geometry.center_of_mass`) and orientation by three perpendicular
+    unit vectors denoting three key directions. What these *key
+    directions* are is specified by overriding the `names` attribute.
+
+    Examples::
+
+        class Odometry(BaseOdometry):
+            names = "right", "forwards", "up"
+
+    """
 
     arch_type: str
     """Either of:
@@ -42,7 +56,8 @@ class BaseOdometry(abc.ABC):
 
     @abc.abstractmethod
     def names(self):
-        """The names of the axes given by :attr:`axes`."""
+        """The names of the axes given by :attr:`axes`. Subclasses should
+        set this attribute to the names of three directions."""
         pass
 
     @property
@@ -50,7 +65,8 @@ class BaseOdometry(abc.ABC):
         """The core unit-vectors listed in :attr:`names` as rows of a
         3x3 matrix.
 
-        This matrix may be used to normalise and unnormalise a set of points. ::
+        This rotation matrix may be used to normalise and unnormalise a set of
+        points. ::
 
             # Transform points into a simplified coordinate system.
             normalised = points @ odom.axes.T

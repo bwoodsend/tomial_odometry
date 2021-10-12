@@ -12,6 +12,7 @@
     :caption: API Reference
 
     reference/odometry
+    reference/base_odometry
 
 
 .. toctree::
