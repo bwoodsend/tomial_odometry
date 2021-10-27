@@ -107,6 +107,9 @@ autodoc_default_options = {
     'undoc-members': True,
 }
 
+# Prevent type hints from being used in property signatures.
+autodoc_typehints = 'none'
+
 # Make `foo` equivalent to :any:`foo`.
 default_role = "any"
 
