@@ -12,7 +12,7 @@ from tomial_odometry._pca import PCA
 
 
 class Odometry(BaseOdometry):
-    """Find the position and orientation of any dental model.
+    """Find the position and orientation of any dental model (:arxiv:`3.1`).
 
     Orientation is described with unit-vectors. The following directions are
     available as attributes. The unit-vectors are of
