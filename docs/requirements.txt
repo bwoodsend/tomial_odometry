@@ -1,4 +1,5 @@
 docutils==0.16
+importlib-metadata ; python_version < '3.8'
 Sphinx==4.2.0
 sphinx-copybutton==0.3.3
 sphinxcontrib-websupport==1.1.0

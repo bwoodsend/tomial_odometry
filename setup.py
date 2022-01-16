@@ -3,7 +3,6 @@
 """
 
 from setuptools import setup, find_packages
-import runpy
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -43,6 +42,6 @@ setup(
     name='tomial_odometry',
     packages=find_packages(include=['tomial_odometry', 'tomial_odometry.*']),
     url='https://github.com/bwoodsend/tomial_odometry',
-    version=runpy.run_path(HERE / "tomial_odometry/_version.py")["__version__"],
+    version="0.1.0",
     zip_safe=False,
 )
