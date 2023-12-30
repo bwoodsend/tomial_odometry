@@ -32,7 +32,7 @@ setup(
     extras_require={
         "test": [
             'pytest>=3', 'pytest-order', 'coverage', 'pytest-cov',
-            'tomial_tooth_collection_api @ git+ssh://git@github.com/bwoodsend/tomial_tooth_collection_api.git@fd1689ead59b9dd288aeab6c26375590d54da1ba'
+            'tomial_tooth_collection_api @ git+ssh://git@github.com/bwoodsend/tomial_tooth_collection_api.git@9c50e74a209443992f8e54dbf29a450dbbbae3ae'
         ]
     },
     license="MIT license",

@@ -3,72 +3,49 @@ name: Test
 
 on:
   workflow_dispatch:
+  pull_request:
 
 jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.9, 3.6, 3.7, 3.8]
-        architecture: ['x64']
         include:
-          - os: macos-10.15
+          - os: ubuntu-latest
+            python-version: 3.12
+          - os: ubuntu-20.04
+            python-version: 3.6
+          - os: macos-latest
+            python-version: 3.12
+          - os: windows-latest
             python-version: 3.9
-            architecture: 'x64'
-          - os: macos-11.0
-            python-version: 3.9
-            architecture: 'x64'
-          - name: Windows
-            os: windows-latest
-            python-version: 3.9
-            architecture: 'x64'
-          - name: Windows 32-bit
-            os: windows-latest
-            python-version: 3.9
-            architecture: 'x86'
-
       fail-fast: false
-
     runs-on: ${{ matrix.os }}
 
+    env:
+      FORCE_COLOR: 1
+
     steps:
-
       - uses: actions/checkout@v3
-      - run: |
-          git fetch --prune --unshallow
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: ${{ matrix.architecture }}
-
-      - name: Cache pip cached wheels
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: pip-cache
-          key: restore-key
-          restore-keys: restore-key
 
       - name: Install
         shell: bash
         run: |
           mkdir -p ~/.ssh
-          echo ${{ secrets.SSH }} | base64 -d > ~/.ssh/id_rsa
+          echo '${{ secrets.SSH }}' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           eval $(ssh-agent)
           ssh-add ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no git@github.com ls || echo ''
           ssh git@github.com || echo ''
-          pip install --cache-dir=pip-cache wheel
-          pip install --cache-dir=pip-cache -e .[test]
+          pip install wheel
+          pip install -e .[test]
 
       - name: Authenticate tomial_tooth_collection_api
         run: python -m tomial_tooth_collection_api --authenticate
         env:
           TOMIAL_TOOTH_COLLECTION_TOKEN: ${{ secrets.TOMIAL_TOOTH_COLLECTION_TOKEN }}
 
-      - name: Test
-        run: pytest
+      - run: pytest
