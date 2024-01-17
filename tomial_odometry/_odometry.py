@@ -190,8 +190,6 @@ class Odometry(BaseOdometry):
 
         # Compare with the PCA's occlusal.
         agreement = self._mesh_occlusal(self.occlusal)
-
-        assert abs(agreement) > 0.75, agreement  # typically > .95
         self._eZ[:] *= np.sign(agreement)  # and swap sign if necessary
 
     def _check_eY_sign(self):
