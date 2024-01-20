@@ -125,7 +125,7 @@ class Odometry(BaseOdometry):
         return self
 
     def _init(self, mesh, arch_type, hints):
-        self._mesh = mesh
+        self._mesh = mesh[mesh.areas > 0]
         self.arch_type = arch_type
         if hints is not None:
             assert hints.shape == (3, 3)

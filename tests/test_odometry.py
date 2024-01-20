@@ -163,3 +163,22 @@ def test_hints():
     assert self.right[0] < -.9
     assert self.forwards[2] > .9
     assert self.up[1] > .9
+
+
+def test_invalid_polygons():
+    mesh = Mesh(model('0L'))
+    mesh = Mesh(mesh.vertices.copy(), mesh.faces)
+
+    mesh.faces[[0, 100, 454]] = [[0, 0, 0], [23, 23, 567], [87, 0, 87]]
+    mesh.reset()
+    self = Odometry(mesh, "L")
+    assert abs(self._eX[0]) > .9
+    assert abs(self._eZ[1]) > .9
+    assert abs(self._eY[2]) > .9
+
+    mesh.vertices[::1000] = np.nan
+    mesh.reset()
+    self = Odometry(mesh, "L")
+    assert abs(self._eX[0]) > .9
+    assert abs(self._eZ[1]) > .9
+    assert abs(self._eY[2]) > .9
