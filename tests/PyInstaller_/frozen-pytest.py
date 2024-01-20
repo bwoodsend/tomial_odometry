@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Freeze pytest.main() with tomial_odometry included.
 """

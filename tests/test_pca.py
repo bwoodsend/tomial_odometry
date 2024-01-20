@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-"""
-
 import numpy as np
 import pytest
 from motmot.geometry import orthogonal_bases, get_components_zipped
