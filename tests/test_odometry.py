@@ -2,6 +2,8 @@
 """
 """
 
+from pathlib import Path
+
 import numpy as np
 import pytest
 from motmot import Mesh, geometry
@@ -182,3 +184,22 @@ def test_invalid_polygons():
     assert abs(self._eX[0]) > .9
     assert abs(self._eZ[1]) > .9
     assert abs(self._eY[2]) > .9
+
+
+def test_non_dental_model():
+    path = Path.home() / ".cache" / "tomial-odometry-tests" / "rabbit.stl"
+    if not (path.exists() and path.stat().st_size == 3715384):
+        from urllib.request import urlopen
+        path.parent.mkdir(exist_ok=True, parents=True)
+        url = "https://raw.githubusercontent.com/bwoodsend/vtkplotlib/v2.1.0/vtkplotlib/data/models/rabbit/rabbit.stl"
+        with urlopen(url) as response:
+            path.write_bytes(response.read())
+    mesh = Mesh(path)
+    self = Odometry(mesh)
+    assert np.isfinite(self.axes).all()
+
+    Odometry(Mesh(mesh.vertices * 1e4, mesh.faces))
+
+    mesh = Mesh(np.random.uniform(-30, 30, (1000, 3)),
+                np.random.randint(0, 1000, (400, 3)))
+    Odometry(mesh)

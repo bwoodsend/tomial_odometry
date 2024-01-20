@@ -172,7 +172,13 @@ class Odometry(BaseOdometry):
 
         """
         weights = (.05 - self._mesh.areas).clip(min=0)
-        pca = PCA(self._mesh.centers, weights)
+        try:
+            old = np.seterr(invalid="ignore")
+            pca = PCA(self._mesh.centers, weights)
+        except np.linalg.LinAlgError:
+            pca = PCA(self._mesh.centers)
+        finally:
+            np.seterr(**old)
 
         self.center_of_mass = pca.center_of_mass
         self._eZ, self._eY, self._eX = map(geometry.UnitVector,
